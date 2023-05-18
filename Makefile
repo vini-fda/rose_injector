@@ -1,5 +1,5 @@
 CC := g++
-TARGET := rose_identify
+TARGET := rose_injector
 
 ROSECPP=$(shell rose-config cppflags)
 ROSECXX=$(shell rose-config cxxflags) -Wno-misleading-indentation
