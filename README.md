@@ -1,6 +1,6 @@
 # ROSE-injector
 
-This is an experimental tool to identify and substitute variables that are used in expressions in C code, effectively performing a crude form of [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection), written in C++ with the help of the ROSE compiler infrastructure. The main implementation is based on Matthew Sottile's code [here](https://github.com/rose-compiler/rose/issues/228).
+This is an experimental tool to identify and substitute variables that are used in expressions in C code, effectively performing something which loosely resembles [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection), written in C++ with the help of the ROSE compiler infrastructure. The main implementation is based on Matthew Sottile's code [here](https://github.com/rose-compiler/rose/issues/228).
 
 ## How to build
 
