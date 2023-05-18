@@ -1,4 +1,5 @@
 #include "rose.h"
+#include <algorithm>
 
 class SynthesizedAttribute
 {
@@ -10,7 +11,10 @@ public:
     {
         for (auto e : other.globalStatics)
         {
-            globalStatics.push_back(e);
+            auto it = std::find(globalStatics.begin(), globalStatics.end(), e);
+            if (it == globalStatics.end()) {
+                globalStatics.push_back(e);
+            }
         }
         for (auto kv : other.worklist)
         {
@@ -47,7 +51,7 @@ visitorTraversal::evaluateSynthesizedAttribute(SgNode *n, SynthesizedAttributesL
     }
     else if (SgFunctionDefinition *fundef = isSgFunctionDefinition(n))
     {
-        if (localResult.globalStatics.size() > 0)
+        if ((localResult.globalStatics.size() > 0) && (fundef->get_declaration()->get_name() != "main"))
         {
             localResult.worklist.insert({fundef, localResult.globalStatics});
             std::cout << "FunDef: " << fundef->get_declaration()->get_name() << std::endl;
