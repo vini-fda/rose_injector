@@ -1,5 +1,6 @@
 CC := g++
 TARGET := rose_injector
+DEBUG_TARGET := $(TARGET)_debug
 
 ROSECPP=$(shell rose-config cppflags)
 ROSECXX=$(shell rose-config cxxflags) -Wno-misleading-indentation
@@ -11,19 +12,31 @@ TARGETDIR := target
 
 SOURCES := $(wildcard $(SRCDIR)/*.cpp)
 OBJECTS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
+DEBUG_OBJECTS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/debug/%.o,$(SOURCES))
 
 .PHONY: all clean
 
 all: $(TARGET)
 
+debug: $(DEBUG_TARGET)
+
 $(TARGET): $(OBJECTS) | $(TARGETDIR)
 	$(CC) $(ROSECPP) $(ROSECXX) $^ -o $(TARGETDIR)/$@ $(ROSELD)
+
+$(DEBUG_TARGET): $(DEBUG_OBJECTS) | $(TARGETDIR)
+	$(CC) $(ROSECPP) $(ROSECXX) -g $^ -o $(TARGETDIR)/$@ $(ROSELD)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	$(CC) $(ROSECPP) $(ROSECXX) -c $< -o $@
 
+$(OBJDIR)/debug/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)/debug
+	$(CC) $(ROSECPP) $(ROSECXX) -g -c $< -o $@
+
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/debug:
+	mkdir -p $(OBJDIR)/debug
 
 $(TARGETDIR):
 	mkdir -p $(TARGETDIR)
